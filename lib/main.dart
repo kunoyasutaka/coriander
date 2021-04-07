@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'main_model.dart';
 
 
 void main() {
@@ -6,32 +9,37 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  final String kboyText = "KBOYさんじゃないよ";
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text("コリアンダー"),
-        ),
-        body: Center(
-          child: Column(
-            children: [
-              Text(
-                kboyText,
-                style: TextStyle(
-                  fontSize: 30.0,
+      home: ChangeNotifierProvider<MainModel>(
+        create: (_) => MainModel(),
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text("コリアンダー"),
+          ),
+          body: Consumer<MainModel>(builder: (context, model, child) {
+              return Center(
+                child: Column(
+                  children: [
+                    Text(
+                      model.kboyText,
+                      style: TextStyle(
+                        fontSize: 30.0,
+                      ),
+                    ),
+                    ElevatedButton(
+                      child: Text("ボタン"),
+                      onPressed: () {
+                        model.changeKboyText();
+                      },
+                    ),
+                  ],
                 ),
-              ),
-              ElevatedButton(
-                child: Text("ボタン"),
-                onPressed: () {
-
-                },
-              ),
-            ],
+              );
+            }
           ),
         ),
       ),
