@@ -1,43 +1,38 @@
 import 'package:flutter/material.dart';
 
-import 'next_page.dart';
 
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  final String kboyText = "KBOYさんじゃないよ";
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text("コリアンダー"),
+        ),
+        body: Center(
+          child: Column(
+            children: [
+              Text(
+                kboyText,
+                style: TextStyle(
+                  fontSize: 30.0,
+                ),
+              ),
+              ElevatedButton(
+                child: Text("ボタン"),
+                onPressed: () {
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  final items = List<String>.generate(10000, (i) => "Item $i");
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("コリアンダー"),
-      ),
-      body: Text(
-        "KBOYさんじゃないよ",
-        style: TextStyle(
-          fontSize: 30.0,
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
