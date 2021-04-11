@@ -1,4 +1,5 @@
 import 'package:coriander/presentation/book_list/book_list_page.dart';
+import 'package:coriander/signup/signup_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -39,7 +40,7 @@ class MyApp extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => BookListPage()));
+                              builder: (context) => SignUpPage()));
                     },
                   ),
                 ],

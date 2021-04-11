@@ -4,21 +4,22 @@ import 'package:flutter/material.dart';
 
 class AddBookModel extends ChangeNotifier {
   String bookTitle = "";
+  final CollectionReference books =
+      FirebaseFirestore.instance.collection("books");
 
   Future addBookToFirebase() async {
     if (bookTitle.isEmpty) {
       throw ("タイトルを入力して下さい");
     }
 
-    FirebaseFirestore.instance.collection("books").add({
+    books.add({
       "title": bookTitle,
       "createAt": Timestamp.now(),
     });
   }
 
   Future upDataBook(Book book) async {
-    final document =
-        FirebaseFirestore.instance.collection("book").doc(book.documentID);
+    final document = books.doc(book.documentID);
     await document.update({
       "title": bookTitle,
       "updateAt": Timestamp.now(),

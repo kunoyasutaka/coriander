@@ -1,3 +1,4 @@
+import 'package:coriander/domain/book.dart';
 import 'package:coriander/presentation/add_book/add_book_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -29,6 +30,24 @@ class BookListPage extends StatelessWidget {
                           model.fetBooks();
                         },
                       ),
+                      onLongPress: () async {
+                        await showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text("${book.title}を削除しますか?"),
+                                actions: [
+                                  TextButton(
+                                    child: Text('OK'),
+                                    onPressed: () async {
+                                      Navigator.of(context).pop();
+                                      await deleteBook(context, model, book);
+                                    },
+                                  )
+                                ],
+                              );
+                            });
+                      },
                     ))
                 .toList();
             return ListView(
@@ -53,5 +72,34 @@ class BookListPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future deleteBook(
+      BuildContext context, BookListModel model, Book book) async {
+    try {
+      await model.deleteBook(book);
+      await model.fetBooks();
+    } catch (e) {
+      //await _showDialog(context, e.toString());
+      print("error");
+    }
+  }
+
+  Future _showDialog(BuildContext context, String title) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(title),
+            actions: [
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          );
+        });
   }
 }
