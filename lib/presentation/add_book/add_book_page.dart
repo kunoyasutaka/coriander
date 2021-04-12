@@ -19,36 +19,68 @@ class AddBookPage extends StatelessWidget {
 
     return ChangeNotifierProvider<AddBookModel>(
       create: (_) => AddBookModel(),
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(isUpdata ? "本を編集" : "本を追加"),
-        ),
-        body: Consumer<AddBookModel>(
-          builder: (context, model, child) {
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  TextField(
-                    controller: textEditingController,
-                    onChanged: (text) {
-                      model.bookTitle = text;
-                    },
+      child: Stack(
+        children: [
+          Scaffold(
+            appBar: AppBar(
+              title: Text(isUpdata ? "本を編集" : "本を追加"),
+            ),
+            body: Consumer<AddBookModel>(
+              builder: (context, model, child) {
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        width: 100.0,
+                        height: 160.0,
+                        child: InkWell(
+                          onTap: () async {
+                            await model.showImagePicker();
+                          },
+                          child: model.imageFile != null
+                              ? Image.file(model.imageFile)
+                              : Container(
+                                  color: Colors.grey,
+                                ),
+                        ),
+                      ),
+                      TextField(
+                        controller: textEditingController,
+                        onChanged: (text) {
+                          model.bookTitle = text;
+                        },
+                      ),
+                      ElevatedButton(
+                          child: Text(isUpdata ? "更新する" : "追加する"),
+                          onPressed: () async {
+                            model.startLoading();
+                            if (isUpdata) {
+                              await updateBook(model, context);
+                            } else {
+                              await addBook(model, context);
+                            }
+                            model.endLoading();
+                          }),
+                    ],
                   ),
-                  ElevatedButton(
-                      child: Text(isUpdata ? "更新する" : "追加する"),
-                      onPressed: () async {
-                        if (isUpdata) {
-                          await updateBook(model, context);
-                        } else {
-                          await addBook(model, context);
-                        }
-                      }),
-                ],
-              ),
-            );
-          },
-        ),
+                );
+              },
+            ),
+          ),
+          Consumer<AddBookModel>(
+            builder: (context, model, child) {
+              return model.isLoading
+                  ? Container(
+                      color: Colors.grey.withOpacity(0.7),
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    )
+                  : SizedBox();
+            },
+          )
+        ],
       ),
     );
   }

@@ -2,6 +2,7 @@
     package="com.onigiri.coriander">
    <application
         android:label="coriander"
+        android:requestLegacyExternalStorage="true"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
